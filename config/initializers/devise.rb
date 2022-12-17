@@ -5,7 +5,21 @@
 # are not: uncommented lines are intended to protect your configuration from
 # breaking changes in upgrades (i.e., in the event that future versions of
 # Devise change the default values for those options).
-#
+
+class TurboFailureApp < Devise::FailureApp
+  def respond
+    if request_format == :turbo_stream
+      :redirect
+    else
+      super
+    end
+  end
+
+  def skip_format?
+    %w[html turbo_stream].include? request_format.to_s
+  end
+end
+
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
@@ -14,7 +28,13 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = '333557757366b9b64fa9e0d5c0267d67f069a25c7ec4812e89486decd4d4006cdd100c758805b30e7a8907fe9e6b8901d54b0e8e378826963232b3ae39253d3f'
+  # config.secret_key = '730f0fa4c9fd7bb3b31cd1b248c44b43ae615c098515a43bf12b775e56ab1c147bb60d8e0e75685c0529b398870f1bbc5478459292cc0f23937281f14d0c5c0d'
+
+  config.parent_controller = 'TurboDeviseController'
+  config.navigational_formats = ['*/*', :html, :turbo_stream]
+  config.warden do |manager|
+    manager.failure_app = TurboFailureApp
+  end
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
