@@ -1,7 +1,9 @@
-<p style="color: green"><%= notice %></p>
 <h1>Posts</h1>
+<br>
 <div id="posts">
   <% @posts.each do |post| %>
     <%= render post %>
+    <%= link_to "Show post", post, class:"btn btn-primary" %>
+    <hr>
   <% end %>
 </div>
