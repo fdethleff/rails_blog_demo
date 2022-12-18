@@ -1,8 +1,9 @@
 <div id="<%= dom_id post %>">
   <div class="p-4 mb-1 bg-light rounded-3">
     <div class="container-fluid py-2">
-      <h1 class="display-6 fw-bold"><%= post.title %></h1>
-      <p class="col-md-8 fs-4"><%= post.body %></p>
+      <p class="display-6 fs-3 fw-bold"><%= post.title %></p>
+      <p>posted by: <%= post.user.name %></p>
+      <p class="col-md-8 fs-5"><%= post.body %></p>
       <p><%= pluralize(post.views, "view") %></p>
     </div>
   </div>
